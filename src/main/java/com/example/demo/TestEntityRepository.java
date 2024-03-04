@@ -17,7 +17,7 @@ public interface TestEntityRepository extends JpaRepository<TestEntity, UUID> {
     @Query("""
                 FROM TestEntity te
                 ORDER BY array_position(
-                  ((SELECT array_agg(se.enumKey) WITHIN GROUP (ORDER BY se.sortValue) FROM SortEntity se))
+                  array((SELECT se.enumKey FROM SortEntity se ORDER BY se.sortValue))
                   , te.value)
             """)
     Collection<TestEntity> findSubquery();
